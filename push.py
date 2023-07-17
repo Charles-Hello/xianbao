@@ -15,14 +15,12 @@ headers = {
 }
 
 async def send_text_msg(robot_wxid, to_wxid, msg):
-    print(f"发送消息:{msg}")
     data = dict()
     data["event"] = "SendTextMsg"
     data["robot_wxid"] = robot_wxid
     data["to_wxid"] = to_wxid
     data["msg"] = msg
     result = ujson.dumps(data)
-    print(result)
     return await AsyncHttpx.post(url=API_URL, data=result, headers=headers)
   
   
