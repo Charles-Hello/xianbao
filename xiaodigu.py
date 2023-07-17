@@ -69,14 +69,14 @@ async def xiaodigu_hot():
                         ret_content+=f"\n\n[福]超链接[福]\n{ret_url}"
                 else:
                     print("没有匹配到URL内容")
-                # await send_text_msg(user_id,test_room,f'{ret_content}')
-                # if ret_images:
-                #     for index,image in enumerate(ret_images):
-                #         if 'gif' not in image:
-                #             filename = image.rsplit('/', 1)[-1]
-                #             print(image)
-                #             print(f"图片{index+1}:{filename}")
-                #             await SendImageMsg(user_id,test_room,image,f'{filename}')
+                await send_text_msg(user_id,test_room,f'{ret_content}')
+                if ret_images:
+                    for index,image in enumerate(ret_images):
+                        if 'gif' not in image:
+                            filename = image.rsplit('/', 1)[-1]
+                            print(image)
+                            print(f"图片{index+1}:{filename}")
+                            await SendImageMsg(user_id,test_room,image,f'{filename}')
                 print("====================================="),
             # return ret_content,ret_images
         else:
