@@ -19,7 +19,10 @@ async def main():
         zhuanke_hot(),
         # 添加其他需要运行的异步方法
     ]
-    results =await asyncio.gather(*tasks)
+    results = []
+    for task in tasks:
+        result = await task
+        results.append(result)
     # for i in results:
     #     if i:
     #         result = i[0]
