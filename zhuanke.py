@@ -47,6 +47,7 @@ async def get_hot():
                 # print("Title:", title)
                 # print("Content:", content)
                 # print("URL:", url)
+                await asyncio.sleep(30)
                 ret_content = f"[庆祝]线报标题[庆祝]\n{title}\n\n[烟花]推送内容[烟花]\n{content}"
                 pattern = r"\/zuankeba\/(.*?)\.html"
                 match = re.search(pattern, url)

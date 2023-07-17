@@ -75,7 +75,6 @@ async def xiaodigu_hot():
                             await SendImageMsg(user_id,test_room,image,f'{filename}')
                 print("====================================="),
                 await asyncio.sleep(30)
-
             # return ret_content,ret_images
         else:
             print("没有新的id,无需推送")
