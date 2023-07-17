@@ -14,12 +14,15 @@ new Env('push线报');
 
 
 async def main():
-    tasks = [
-        xiaodigu_hot(),
-        zhuanke_hot(),
-        # 添加其他需要运行的异步方法
-    ]
-    results =await asyncio.gather(*tasks)
+    try:
+        tasks = [
+            xiaodigu_hot(),
+            zhuanke_hot(),
+            # 添加其他需要运行的异步方法
+        ]
+        results =await asyncio.gather(*tasks)
+    except Exception as e:
+        print(e)
     for i in results:
         if i:
             result = i[0]
