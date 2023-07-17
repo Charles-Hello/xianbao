@@ -8,7 +8,7 @@ from push import send_text_msg,SendImageMsg
 from config import user_id,test_room
 
 '''
-cron: * * * * *
+cron: */10 * * * *
 new Env('push线报');
 '''
 
