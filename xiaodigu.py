@@ -1,4 +1,4 @@
-from config import XiaodiguPrevious_ids_file,user_id,group_id
+from config import XiaodiguPrevious_ids_file,user_id,test_room
 from bs4 import BeautifulSoup
 from get_url_content import get_url_images
 import re
@@ -65,14 +65,14 @@ async def xiaodigu_hot():
                         ret_content+=f"\n\n[福]超链接[福]\n{ret_url}"
                 else:
                     print("没有匹配到URL内容")
-                await send_text_msg(user_id,group_id,f'{ret_content}')
+                await send_text_msg(user_id,test_room,f'{ret_content}')
                 if ret_images:
                     for index,image in enumerate(ret_images):
                         if 'gif' not in image:
                             filename = image.rsplit('/', 1)[-1]
                             print(image)
                             print(f"图片{index+1}:{filename}")
-                            await SendImageMsg(user_id,group_id,image,f'{filename}')
+                            await SendImageMsg(user_id,test_room,image,f'{filename}')
                 print("====================================="),
                 await asyncio.sleep(30)
 
