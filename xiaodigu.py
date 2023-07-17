@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 from get_url_content import get_url_images
 import re
 from http_utils import AsyncHttpx
+import asyncio
+
 async def xiaodigu_hot():
 
 
@@ -59,7 +61,7 @@ async def xiaodigu_hot():
                 else:
                     print("没有匹配到URL内容")
                 print("=====================================")
-     
+                await asyncio.sleep(30)
             # 将新的id列表保存到txt文件
             with open(XiaodiguPrevious_ids_file, 'w+') as file:
                 file.write('\n'.join(current_ids))

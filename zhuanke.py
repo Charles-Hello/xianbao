@@ -2,7 +2,7 @@ import re
 from get_url_content import get_url_images
 from config import zhuanPrevious_ids_file
 from http_utils import AsyncHttpx
-
+import asyncio
 
 async def get_hot():
     cookies = {
@@ -52,6 +52,7 @@ async def get_hot():
                 else:
                     print("没有匹配到URL内容")
                 print("=====================================")
+                await asyncio.sleep(30)
             # 将新的id列表保存到txt文件
             with open(zhuanPrevious_ids_file, 'w+') as file:
                 file.write('\n'.join(current_ids))
