@@ -12,7 +12,8 @@ import httpx
 import rich
 from httpx import ConnectTimeout, Response
 
-from retrying import retry
+from tenacity import retry, stop_after_attempt, stop_after_delay, wait_chain, wait_fixed
+
 
 from user_agent import get_user_agent
 
@@ -20,58 +21,13 @@ from utils import get_local_proxy
 
 
 
-
 class AsyncHttpx:
 
     proxy = {"http://": get_local_proxy(), "https://": get_local_proxy()}
-
-    @classmethod
-    @retry(stop_max_attempt_number=5,wait_fixed=20000)
-    async def put(
-        cls,
-        url: str,
-        *,
-        data: Any = None,
-        json: Any = None,
-        headers: Optional[Dict[str, str]] = None,
-        cookies: Optional[Dict[str, str]] = None,
-        verify: bool = True,
-        use_proxy: bool = True,
-        proxy: Optional[Dict[str, str]] = None,
-        timeout: Optional[int] = 30,
-        **kwargs,
-    ) -> Response:
-        """
-        说明:
-            Put
-        参数:
-            :param url: url
-            :param data: 请求体数据
-            :param json: json 数据
-            :param headers: 请求头
-            :param cookies: cookies
-            :param verify: verify
-            :param use_proxy: 使用默认代理
-            :param proxy: 指定代理
-            :param timeout: 超时时间
-        """
-        if not headers:
-            headers = get_user_agent()
-        proxy_ = proxy if proxy else cls.proxy if use_proxy else None
-        async with httpx.AsyncClient(proxies=proxy_, verify=verify) as client:
-            return await client.put(
-                url,
-                data=data,
-                json=json,
-                headers=headers,
-                cookies=cookies,
-                timeout=timeout,
-                **kwargs,
-            )
-    
+    proxy =get_local_proxy()
     
     @classmethod
-    @retry(stop_max_attempt_number=5,wait_fixed=20000)
+    @retry(stop=stop_after_attempt(5), wait=wait_fixed(40))
     async def get(
         cls,
         url: str,
@@ -98,6 +54,7 @@ class AsyncHttpx:
             :param proxy: 指定代理
             :param timeout: 超时时间
         """
+
         if not headers:
             headers = get_user_agent()
         proxy_ = proxy if proxy else cls.proxy if use_proxy else None
@@ -112,7 +69,7 @@ class AsyncHttpx:
             )
 
     @classmethod
-    @retry(stop_max_attempt_number=5,wait_fixed=20000)
+    @retry(stop=stop_after_attempt(5), wait=wait_fixed(30))
     async def post(
         cls,
         url: str,
@@ -162,6 +119,54 @@ class AsyncHttpx:
                 timeout=timeout,
                 **kwargs,
             )
+
+
+
+    
+    @classmethod
+    @retry(stop=stop_after_attempt(5), wait=wait_fixed(30))
+    async def put(
+        cls,
+        url: str,
+        *,
+        data: Any = None,
+        json: Any = None,
+        headers: Optional[Dict[str, str]] = None,
+        cookies: Optional[Dict[str, str]] = None,
+        verify: bool = True,
+        use_proxy: bool = True,
+        proxy: Optional[Dict[str, str]] = None,
+        timeout: Optional[int] = 30,
+        **kwargs,
+    ) -> Response:
+        """
+        说明:
+            Put
+        参数:
+            :param url: url
+            :param data: 请求体数据
+            :param json: json 数据
+            :param headers: 请求头
+            :param cookies: cookies
+            :param verify: verify
+            :param use_proxy: 使用默认代理
+            :param proxy: 指定代理
+            :param timeout: 超时时间
+        """
+        if not headers:
+            headers = get_user_agent()
+        proxy_ = proxy if proxy else cls.proxy if use_proxy else None
+        async with httpx.AsyncClient(proxies=proxy_, verify=verify) as client:
+            return await client.put(
+                url,
+                data=data,
+                json=json,
+                headers=headers,
+                cookies=cookies,
+                timeout=timeout,
+                **kwargs,
+            )
+
 
     @classmethod
     async def download_file(

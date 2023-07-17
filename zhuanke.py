@@ -4,9 +4,9 @@ from config import zhuanPrevious_ids_file,user_id,test_room
 from http_utils import AsyncHttpx
 import asyncio
 from push import send_text_msg,SendImageMsg
+from regx_text import check_title_and_content
 
-
-async def get_hot():
+async def zhuanke_hot():
     cookies = {
         'timezone': '8',
     }
@@ -44,10 +44,13 @@ async def get_hot():
                 title = data['title']
                 content = data['content']
                 url = data['url']
-                # print("Title:", title)
-                # print("Content:", content)
+                print("Title:", title)
+                print("Content:", content)
                 # print("URL:", url)
-                await asyncio.sleep(30)
+                result = check_title_and_content(title, content)
+                if not result:
+                    print("我被过滤啦")
+                    continue
                 ret_content = f"[庆祝]线报标题[庆祝]\n{title}\n\n[烟花]推送内容[烟花]\n{content}"
                 pattern = r"\/zuankeba\/(.*?)\.html"
                 match = re.search(pattern, url)
@@ -58,16 +61,15 @@ async def get_hot():
                         ret_content+=f"\n\n[福]超链接[福]\n{ret_url}"
                 else:
                     print("没有匹配到URL内容")
-                await send_text_msg(user_id,test_room,f'{ret_content}')
-                if ret_images:
-                    for index,image in enumerate(ret_images):
-                        if 'gif' not in image:
-                            filename = image.rsplit('/', 1)[-1]
-                            print(image)
-                            print(f"图片{index+1}:{filename}")
-                            await SendImageMsg(user_id,test_room,image,f'{filename}')
+                # await send_text_msg(user_id,test_room,f'{ret_content}')
+                # if ret_images:
+                #     for index,image in enumerate(ret_images):
+                #         if 'gif' not in image:
+                #             filename = image.rsplit('/', 1)[-1]
+                #             print(image)
+                #             print(f"图片{index+1}:{filename}")
+                #             await SendImageMsg(user_id,test_room,image,f'{filename}')
                 print("====================================="),
-                await asyncio.sleep(30)
             # return ret_content,ret_images
         else:
             print("没有新的id,无需推送")

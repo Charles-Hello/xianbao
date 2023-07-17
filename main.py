@@ -2,7 +2,7 @@
 
 
 from xiaodigu import xiaodigu_hot
-from zhuanke import get_hot as zhuanke_hot
+from zhuanke import zhuanke_hot
 import asyncio
 from push import send_text_msg,SendImageMsg
 from config import user_id,test_room
@@ -19,10 +19,12 @@ async def main():
         zhuanke_hot(),
         # 添加其他需要运行的异步方法
     ]
-    results = []
-    for task in tasks:
-        result = await task
-        results.append(result)
+    results = await asyncio.gather(*tasks)
+    # results = []
+    # for task in tasks:
+    #     result = await task
+    #     results.append(result)
+    # print(results)
     # for i in results:
     #     if i:
     #         result = i[0]
