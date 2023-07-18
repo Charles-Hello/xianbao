@@ -3,6 +3,7 @@
 
 from xiaodigu import xiaodigu_hot
 from zhuanke import zhuanke_hot
+from kuan import kuan_hot
 import asyncio
 from push import send_text_msg,SendImageMsg
 from config import user_id,test_room
@@ -17,6 +18,7 @@ async def main():
     tasks = [
         xiaodigu_hot(),
         zhuanke_hot(),
+        kuan_hot()
         # 添加其他需要运行的异步方法
     ]
     results = await asyncio.gather(*tasks)
