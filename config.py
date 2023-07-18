@@ -34,3 +34,5 @@ zhuanPrevious_ids_file = 'zhuankeprevious_ids.txt'
 XiaodiguPrevious_ids_file = 'XiaodiguPrevious_ids_file.txt'
 
 
+#酷安先前的id列表文件路径
+kuanPrevious_ids_file = 'kuanPrevious_ids_file.txt'
