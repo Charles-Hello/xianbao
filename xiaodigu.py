@@ -29,7 +29,7 @@ async def xiaodigu_hot():
         for i in div_content:
             a_tag = i.find('a')
             if a_tag:
-                pattern = r'href="/xiaodigu/(.*?).html"\s+target='
+                pattern = r'title="(.*?)"[^>]*?>'
                 match = re.search(pattern, str(a_tag))
                 if match:
                     extracted_content = match.group(1)
@@ -78,7 +78,7 @@ async def xiaodigu_hot():
                             print(f"图片{index+1}:{filename}")
                             await SendImageMsg(user_id,test_room,image,f'{filename}')
                 print("====================================="),
-            # return ret_content,ret_images
+            return ret_content,ret_images
         else:
             print("没有新的id,无需推送")
     else:
@@ -87,3 +87,4 @@ async def xiaodigu_hot():
 
 
 
+asyncio.run(xiaodigu_hot())

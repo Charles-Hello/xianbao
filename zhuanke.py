@@ -30,7 +30,7 @@ async def zhuanke_hot():
 
         current_data = response.json()
         
-        current_ids = [item['id'] for item in current_data['remen6']]
+        current_ids = [item['title'] for item in current_data['remen6']]
         new_ids = list(set(current_ids) - set(previous_ids))
         # 将新的id列表保存到txt文件
         with open(zhuanPrevious_ids_file, 'w+') as file:
@@ -70,11 +70,11 @@ async def zhuanke_hot():
                             print(f"图片{index+1}:{filename}")
                             await SendImageMsg(user_id,test_room,image,f'{filename}')
                 print("====================================="),
-            # return ret_content,ret_images
+            return ret_content,ret_images
         else:
             print("没有新的id,无需推送")
     else:
         print('请求失败')
-# import asyncio
 
-# asyncio.run(get_hot())
+
+asyncio.run(zhuanke_hot())

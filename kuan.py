@@ -30,7 +30,7 @@ async def kuan_hot():
         for i in div_content:
             a_tag = i.find('a')
             if a_tag:
-                pattern = r'href="/kuan/(.*?).html"\s+target='
+                pattern = r'title="(.*?)"[^>]*?>'
                 match = re.search(pattern, str(a_tag))
                 if match:
                     extracted_content = match.group(1)
@@ -89,8 +89,7 @@ async def kuan_hot():
         print('请求失败')
         
 
-
-
+asyncio.run(kuan_hot())
 
 
 
