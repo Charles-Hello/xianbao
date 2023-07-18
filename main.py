@@ -18,7 +18,7 @@ async def main():
     tasks = [
         xiaodigu_hot(),
         zhuanke_hot(),
-        # kuan_hot()
+        kuan_hot()
         # 添加其他需要运行的异步方法
     ]
     results = await asyncio.gather(*tasks)
