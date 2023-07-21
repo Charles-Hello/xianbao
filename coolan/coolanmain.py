@@ -52,7 +52,7 @@ async def kuan():
 
         for items in postlist:
             # print(items)
-            detail_items = items['id']
+            detail_items = items['message']
             # print(detail_items)
             current_ids.append(str(detail_items))
 
