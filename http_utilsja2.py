@@ -33,6 +33,7 @@ class AsyncHttpx:
     proxy =get_local_proxy()
     
     @classmethod
+    @retry(stop=stop_after_attempt(5), wait=wait_fixed(30))
     async def get(
         cls,
         url: str,
@@ -79,6 +80,7 @@ class AsyncHttpx:
         )
 
     @classmethod
+    @retry(stop=stop_after_attempt(5), wait=wait_fixed(30))
     async def post(
         cls,
         url: str,
