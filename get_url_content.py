@@ -1,8 +1,12 @@
 from bs4 import BeautifulSoup
 import re
 from http_utilsja2 import AsyncHttpx
+import requests
+from user_agent import get_user_agent
+from tenacity import retry, stop_after_attempt, stop_after_delay, wait_chain, wait_fixed
 
 
+@retry(stop=stop_after_attempt(5), wait=wait_fixed(30))
 async def get_url_images(type, number):
 
     ret_url = ""
@@ -10,9 +14,9 @@ async def get_url_images(type, number):
     cookies = {
         'timezone': '8',
     }
-
-    response = await AsyncHttpx.get(
-        f'http://new.ixbk.net/{type}/{number}.html', cookies=cookies, verify=False)
+    headers =get_user_agent()
+    response = requests.get(
+        f'http://new.ixbk.net/{type}/{number}.html', headers=headers,cookies=cookies, verify=False)
     response.encoding = 'utf-8'
     html = response.text
     soup = BeautifulSoup(html, 'html.parser')

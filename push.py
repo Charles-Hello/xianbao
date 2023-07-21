@@ -3,7 +3,7 @@
 import ujson
 from http_utilsja2 import AsyncHttpx
 from config import *
-
+import requests
 
 headers = {
     'Name': 'iHttp',
@@ -20,7 +20,7 @@ async def send_text_msg(robot_wxid, to_wxid, msg):
     data["to_wxid"] = to_wxid
     data["msg"] = msg
     result = ujson.dumps(data)
-    return await AsyncHttpx.post(url=API_URL, data=result, headers=headers, tls=False)
+    return requests.post(url=API_URL, data=result, headers=headers)
 
 
 async def SendImageMsg(robot_wxid, to_wxid, path, name):
@@ -33,7 +33,7 @@ async def SendImageMsg(robot_wxid, to_wxid, path, name):
     msg['name'] = name
     data['msg'] = msg
     data = ujson.dumps(data)
-    await AsyncHttpx.post(url=API_URL, data=data, headers=headers, timeout=None, tls=False)
+    return requests.post(url=API_URL, data=data, headers=headers, timeout=None)
 
 
 # url = 'http://image.coolapk.com/feed/2023/0720/23/802421_be548e77_5582_6952_395@1440x3200.jpeg'

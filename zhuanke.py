@@ -5,17 +5,21 @@ from http_utilsja2 import AsyncHttpx
 import asyncio
 from push import send_text_msg, SendImageMsg
 from regx_text import check_title_and_content
+from user_agent import get_user_agent
+import requests
+from tenacity import retry, stop_after_attempt, stop_after_delay, wait_chain, wait_fixed
 
-
+@retry(stop=stop_after_attempt(5), wait=wait_fixed(30))
 async def zhuanke_hot():
     cookies = {
         'timezone': '8',
     }
-
-    response = await AsyncHttpx.get('http://new.ixbk.net/plus/json/zuan-hot.json',
-                                    cookies=cookies,  verify=False)
-    # 检查响应是否成功
-
+    headers = get_user_agent()
+    response = requests.get('http://new.ixbk.net/plus/json/zuan-hot.json',
+                                    headers=headers,cookies=cookies,  verify=False)
+    # # 检查响应是否成功
+    # print(response.status_code)
+    # print(response.text)
     if response.status_code == 200:
         # 指定保存的文件路径
 
@@ -82,7 +86,7 @@ async def zhuanke_hot():
         else:
             print("没有新的id,无需推送")
     else:
-        print('请求失败')
+        print('线报酷的赚客吧请求失败')
 
 
 # asyncio.run(zhuanke_hot())
