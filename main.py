@@ -16,8 +16,8 @@ new Env('push线报');
 
 async def main():
     tasks = [
-        # xiaodigu(),
-        # kuan(),
+        xiaodigu(),
+        kuan(),
         zhuanke_hot(),
         # 添加其他需要运行的异步方法
     ]
