@@ -1,10 +1,11 @@
 import re
 from get_url_content import get_url_images
-from config import zhuanPrevious_ids_file,user_id,test_room
-from http_utils import AsyncHttpx
+from config import zhuanPrevious_ids_file, user_id, test_room
+from http_utilsja2 import AsyncHttpx
 import asyncio
-from push import send_text_msg,SendImageMsg
+from push import send_text_msg, SendImageMsg
 from regx_text import check_title_and_content
+
 
 async def zhuanke_hot():
     cookies = {
@@ -12,7 +13,7 @@ async def zhuanke_hot():
     }
 
     response = await AsyncHttpx.get('http://new.ixbk.net/plus/json/zuan-hot.json',
-                            cookies=cookies,  verify=False)
+                                    cookies=cookies,  verify=False)
     # 检查响应是否成功
 
     if response.status_code == 200:
@@ -28,22 +29,22 @@ async def zhuanke_hot():
                 previous_ids = []
 
         current_data = response.json()
-        
+
         current_ids = [item['title'] for item in current_data['remen6']]
         new_ids = list(set(current_ids) - set(previous_ids))
         # 将新的id列表保存到txt文件
         with open(zhuanPrevious_ids_file, 'w+') as file:
             file.write('\n'.join(current_ids))
-        
+
         listdata = []
         if new_ids:
             indexes = [current_ids.index(new_id) for new_id in new_ids]
             for new_id, index in zip(new_ids, indexes):
                 print(f"赚客新id: {new_id}, 索引: {index}")
-                
+
                 data_entry = {}
-                data_entry['new_id'] = new_id 
-                data  = current_data['remen6'][index]
+                data_entry['new_id'] = new_id
+                data = current_data['remen6'][index]
                 title = data['title']
                 content = data['content']
                 url = data['url']
@@ -59,21 +60,22 @@ async def zhuanke_hot():
                 match = re.search(pattern, url)
                 if match:
                     extracted_content = match.group(1)
-                    ret_url,ret_images =  await get_url_images("zuankeba",extracted_content)
+                    ret_url, ret_images = await get_url_images("zuankeba", extracted_content)
                     if ret_url:
                         data_entry['ret_content'] += f"\n\n[福]超链接[福]\n{ret_url}"
                 else:
                     print("没有匹配到URL内容")
-                    
+
                 listdata.append(data_entry)
                 if ret_images:
                     data_entry['ret_images'] = []
-                    for index,image in enumerate(ret_images):
+                    for index, image in enumerate(ret_images):
                         if 'gif' not in image:
                             filename = image.rsplit('/', 1)[-1]
                             # print(image)
                             # print(f"图片{index+1}:{filename}")
-                            data_entry['ret_images'].append({'url': image, 'filename': filename})
+                            data_entry['ret_images'].append(
+                                {'url': image, 'filename': filename})
                 # print("====================================="),
             # print(listdata)
             return listdata

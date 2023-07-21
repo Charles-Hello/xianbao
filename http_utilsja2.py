@@ -23,7 +23,8 @@ from curl_cffi.requests import AsyncSession
 asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
-
+import pyhttpx
+pyhttpxclient = pyhttpx.HttpSession()
 
 
 class AsyncHttpx:
@@ -32,7 +33,6 @@ class AsyncHttpx:
     proxy =get_local_proxy()
     
     @classmethod
-    @retry(stop=stop_after_attempt(5), wait=wait_fixed(30))
     async def get(
         cls,
         url: str,
@@ -69,18 +69,16 @@ class AsyncHttpx:
         if not headers:
             headers = get_user_agent()
         proxy_ = proxy if proxy else cls.proxy if use_proxy else None
-        async with AsyncSession(proxies=proxy_, verify=verify,impersonate =impersonate) as client:
-            return await client.get(
-                url,
-                params=params,
-                headers=headers,
-                cookies=cookies,
-                timeout=timeout,
-                **kwargs,
-            )
+        return  pyhttpxclient.get(
+            url,
+            params=params,
+            headers=headers,
+            cookies=cookies,
+            timeout=timeout,
+            **kwargs,
+        )
 
     @classmethod
-    @retry(stop=stop_after_attempt(5), wait=wait_fixed(30))
     async def post(
         cls,
         url: str,
@@ -121,18 +119,16 @@ class AsyncHttpx:
         if not headers:
             headers = get_user_agent()
         proxy_ = proxy if proxy else cls.proxy if use_proxy else None
-        async with AsyncSession(proxies=proxy_, verify=verify,            impersonate= impersonate) as client:
-            return await client.post(
-                url,
-                data=data,
-                files=files,
-                json=json,
-                params=params,
-                headers=headers,
-                cookies=cookies,
-                timeout=timeout,
-                **kwargs,
-            )
+        return  pyhttpxclient.post(
+            url,
+            data=data,
+            json=json,
+            params=params,
+            headers=headers,
+            cookies=cookies,
+            timeout=timeout,
+            **kwargs,
+        )
 
 
 
@@ -171,7 +167,7 @@ class AsyncHttpx:
             headers = get_user_agent()
         proxy_ = proxy if proxy else cls.proxy if use_proxy else None
         async with httpx.AsyncClient(proxies=proxy_, verify=verify) as client:
-            return await client.put(
+            return client.put(
                 url,
                 data=data,
                 json=json,

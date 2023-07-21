@@ -41,7 +41,7 @@ async def main():
                 print("Filename:", filename)
                 await SendImageMsg(user_id,test_room,url,filename)
             print("=====================================")
-            await asyncio.sleep(4)
+            await asyncio.sleep(6)
 
 if __name__ == '__main__':
     asyncio.run(main())

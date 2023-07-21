@@ -12,7 +12,8 @@ from bs4 import BeautifulSoup
 # parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
 # # 将 http_utils 所在的目录路径添加到 sys.path 中
 # sys.path.append(parent_dir)
-from http_utils import AsyncHttpx
+from http_utilsja2 import AsyncHttpx
+
 
 
 async def getdetail(detail_itemid):
@@ -31,8 +32,9 @@ async def getdetail(detail_itemid):
     data = {
         'content_id': detail_itemid,
     }
-
+    
     response = await AsyncHttpx.post('https://app.xiaodigu.cn/mag/circle/v3/show/showView', cookies=cookies, headers=headers, data=data)
+    
     data =  response.json()['show']
     
 

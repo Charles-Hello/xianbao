@@ -1,6 +1,5 @@
 
 
-
 import asyncio
 import sys
 import os
@@ -13,9 +12,10 @@ from bs4 import BeautifulSoup
 # sys.path.append(parent_dir)
 from config import XiaodiguPrevious_titles_file
 from xiaodigu.xiangqing import getdetail
-from http_utils import AsyncHttpx
+from http_utilsja2 import AsyncHttpx
 from regx_text import check_word_in_text
 import re
+
 
 async def xiaodigu():
     cookies = {
@@ -52,8 +52,7 @@ async def xiaodigu():
 
     # with open("listchanel.json", "w", encoding="utf-8") as f:
     #     f.write(json.dumps(data, ensure_ascii=False))  # ensure_ascii=False 禁止使用转义字符
-    
-    
+
     if response.status_code == 200:
         data = response.json()
         try:
@@ -65,51 +64,47 @@ async def xiaodigu():
                 previous_ids = []
 
         current_ids = []
-        
+
         postlist = data['list']
-        
+
         for items in postlist:
             detail_items = items['type_value']
             current_ids.append(detail_items)
 
-
         new_ids = list(set(current_ids) - set(previous_ids))
-        
+
         # print(new_ids)
         # 将新的id列表保存到txt文件
         with open(XiaodiguPrevious_titles_file, 'w+') as file:
             file.write('\n'.join(current_ids))
-        
+
         listdata = []
         if new_ids:
             indexes = [current_ids.index(new_id) for new_id in new_ids]
             for new_id, index in zip(new_ids, indexes):
                 data_entry = {}
-                data_entry['new_id'] = new_id 
+                data_entry['new_id'] = new_id
                 print(f"小嘀咕新id: {new_id}, 索引: {index}")
-                data  = postlist[index]
-                
-                
+                data = postlist[index]
+
                 detail_items = data['type_value']
-                title,ret_images,rawurl = await getdetail(detail_items)
-                
+                title, ret_images, rawurl = await getdetail(detail_items)
 
                 result = check_word_in_text(title)
                 if not result:
                     print("我被过滤啦")
-                    continue  
-                    
+                    continue
+
                 data_entry['ret_content'] = f"[庆祝]线报标题[庆祝]\n{title}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}"
-                
-                
 
                 data_entry['ret_images'] = []
-                for index,image in enumerate(ret_images):
+                for index, image in enumerate(ret_images):
                     if 'gif' not in image:
                         filename = image.rsplit('/', 1)[-1]
                         print(image)
                         print(f"图片{index+1}:{filename}")
-                        data_entry['ret_images'].append({'url': image, 'filename': filename})
+                        data_entry['ret_images'].append(
+                            {'url': image, 'filename': filename})
 
                 listdata.append(data_entry)
                 print("====================================="),
@@ -121,6 +116,5 @@ async def xiaodigu():
     else:
         print("无效请求")
 
-    
-    
+
 asyncio.run(xiaodigu())

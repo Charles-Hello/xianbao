@@ -1,15 +1,15 @@
 
-from config import kuanPrevious_ids_file,user_id,test_room
+from config import kuanPrevious_ids_file, user_id, test_room
 from bs4 import BeautifulSoup
 from get_url_content import get_url_images
 import re
-from http_utils import AsyncHttpx
+from http_utilsja2 import AsyncHttpx
 import asyncio
-from push import send_text_msg,SendImageMsg
+from push import send_text_msg, SendImageMsg
 from regx_text import check_title_and_content
 
-async def kuan_hot():
 
+async def kuan_hot():
 
     response = await AsyncHttpx.get('http://new.ixbk.net/category-kuan/', verify=False)
 
@@ -49,9 +49,9 @@ async def kuan_hot():
             indexes = [current_ids.index(new_id) for new_id in new_ids]
             for new_id, index in zip(new_ids, indexes):
                 data_entry = {}
-                data_entry['new_id'] = new_id 
+                data_entry['new_id'] = new_id
                 print(f"酷安id: {new_id}, 索引: {index}")
-                data  = div_content[index].find('a')
+                data = div_content[index].find('a')
                 title = data.get('title')
                 content = data.get('data-content')
                 url = data.get('href')
@@ -62,13 +62,13 @@ async def kuan_hot():
                 if not result:
                     print("我被过滤啦")
                     continue
-                
+
                 data_entry['ret_content'] = f"[庆祝]线报标题[庆祝]\n{title}\n\n[烟花]推送内容[烟花]\n{content}"
                 pattern = r'/kuan/(.*?).html'
                 match = re.search(pattern, str(url))
                 if match:
                     extracted_content = match.group(1)
-                    ret_url,ret_images = await get_url_images("kuan",extracted_content)
+                    ret_url, ret_images = await get_url_images("kuan", extracted_content)
                     if ret_url:
                         data_entry['ret_content'] += f"\n\n[福]超链接[福]\n{ret_url}"
                         print(ret_images)
@@ -77,23 +77,19 @@ async def kuan_hot():
                 listdata.append(data_entry)
                 if ret_images:
                     data_entry['ret_images'] = []
-                    for index,image in enumerate(ret_images):
+                    for index, image in enumerate(ret_images):
                         if 'gif' not in image:
                             filename = image.rsplit('/', 1)[-1]
                             print(image)
                             print(f"图片{index+1}:{filename}")
-                            data_entry['ret_images'].append({'url': image, 'filename': filename})
+                            data_entry['ret_images'].append(
+                                {'url': image, 'filename': filename})
                 print("====================================="),
             return listdata
         else:
             print("没有新的id,无需推送")
     else:
         print('请求失败')
-        
+
 
 # asyncio.run(kuan_hot())
-
-
-
-
-
