@@ -19,8 +19,8 @@ from user_agent import get_user_agent
 
 from utils import get_local_proxy
 
-from curl_cffi.requests import AsyncSession
-asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+# from curl_cffi.requests import AsyncSession
+# asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
 import pyhttpx
