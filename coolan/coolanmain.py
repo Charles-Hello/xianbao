@@ -53,8 +53,10 @@ async def kuan():
         for items in postlist:
             # print(items)
             detail_items = items['message']
-            # print(detail_items)
-            current_ids.append(str(detail_items))
+            soup = BeautifulSoup(detail_items, 'html.parser')
+            non_html_text = soup.get_text()
+            non_html_text = non_html_text.replace("查看链接", "").replace('#薅羊毛小分队#', '').replace('\n', '')
+            current_ids.append(str(non_html_text))
 
         new_ids = list(set(current_ids) - set(previous_ids))
 
