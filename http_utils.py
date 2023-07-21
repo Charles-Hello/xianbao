@@ -19,6 +19,8 @@ from user_agent import get_user_agent
 
 from utils import get_local_proxy
 
+from curl_cffi.requests import AsyncSession
+asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 
 class AsyncHttpx:
@@ -27,7 +29,7 @@ class AsyncHttpx:
     proxy =get_local_proxy()
     
     @classmethod
-    @retry(stop=stop_after_attempt(5), wait=wait_fixed(40))
+    @retry(stop=stop_after_attempt(5), wait=wait_fixed(30))
     async def get(
         cls,
         url: str,
@@ -38,7 +40,8 @@ class AsyncHttpx:
         verify: bool = True,
         use_proxy: bool = True,
         proxy: Optional[Dict[str, str]] = None,
-        timeout: Optional[int] = 30,
+        timeout: Optional[int] = 3,
+        tls: bool = True,
         **kwargs,
     ) -> Response:
         """
@@ -53,12 +56,17 @@ class AsyncHttpx:
             :param use_proxy: 使用默认代理
             :param proxy: 指定代理
             :param timeout: 超时时间
+            :param impersonate: 模拟代理
         """
 
+        if tls:
+            impersonate="chrome101"
+        else:
+            impersonate=None
         if not headers:
             headers = get_user_agent()
         proxy_ = proxy if proxy else cls.proxy if use_proxy else None
-        async with httpx.AsyncClient(proxies=proxy_, verify=verify) as client:
+        async with AsyncSession(proxies=proxy_, verify=verify,impersonate =impersonate) as client:
             return await client.get(
                 url,
                 params=params,
@@ -75,7 +83,6 @@ class AsyncHttpx:
         url: str,
         *,
         data: Optional[Dict[str, str]] = None,
-        content: Any = None,
         files: Any = None,
         verify: bool = True,
         use_proxy: bool = True,
@@ -84,7 +91,8 @@ class AsyncHttpx:
         params: Optional[Dict[str, str]] = None,
         headers: Optional[Dict[str, str]] = None,
         cookies: Optional[Dict[str, str]] = None,
-        timeout: Optional[int] = 30,
+        timeout: Optional[int] = 3,
+        tls: bool = True,
         **kwargs,
     ) -> Response:
         """
@@ -93,7 +101,6 @@ class AsyncHttpx:
         参数:
             :param url: url
             :param data: data
-            :param content: content
             :param files: files
             :param use_proxy: 是否默认代理
             :param proxy: 指定代理
@@ -102,14 +109,18 @@ class AsyncHttpx:
             :param headers: 请求头
             :param cookies: cookies
             :param timeout: 超时时间
+            :param impersonate: 模拟代理
         """
+        if tls:
+            impersonate="chrome101"
+        else:
+            impersonate=None
         if not headers:
             headers = get_user_agent()
         proxy_ = proxy if proxy else cls.proxy if use_proxy else None
-        async with httpx.AsyncClient(proxies=proxy_, verify=verify) as client:
+        async with AsyncSession(proxies=proxy_, verify=verify,            impersonate= impersonate) as client:
             return await client.post(
                 url,
-                content=content,
                 data=data,
                 files=files,
                 json=json,

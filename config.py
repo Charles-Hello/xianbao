@@ -18,7 +18,7 @@ group_id = '24446492186@chatroom'
 user_id = 'wxid_p8geau233z3412'
 taobao_fuli = '17573440617@chatroom'
 taobao_xianbao = '5739151628@chatroom'
-test_room = '19378256744@chatroom'
+test_room = group_id
 Redis_ip = '192.168.1.155'  ## Redis地址
 Redis_port = '19736'  ## Redis端口，默认为6379
 Redis_pass = ''  ## Redis密码，无则不填
@@ -30,9 +30,14 @@ zhuanPrevious_ids_file = 'zhuankeprevious_ids.txt'
 
 
 # 小嘀咕先前的id列表文件路径
-
 XiaodiguPrevious_ids_file = 'XiaodiguPrevious_ids_file.txt'
-
 
 #酷安先前的id列表文件路径
 kuanPrevious_ids_file = 'kuanPrevious_ids_file.txt'
+
+
+#原酷安
+kuandiguPrevious_titles_file = 'kuandiguPrevious_titles_file.txt'
+
+#原小嘀咕
+XiaodiguPrevious_titles_file = 'XiaodiguPrevious_titles_file.txt'

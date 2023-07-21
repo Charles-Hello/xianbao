@@ -1,9 +1,9 @@
 
 
 
-from xiaodigu import xiaodigu_hot
+from coolan.coolanmain import kuan
 from zhuanke import zhuanke_hot
-from kuan import kuan_hot
+from xiaodigu.xiaodigumain import xiaodigu
 import asyncio
 from push import send_text_msg,SendImageMsg
 from config import user_id,test_room
@@ -16,31 +16,32 @@ new Env('push线报');
 
 async def main():
     tasks = [
-        xiaodigu_hot(),
+        xiaodigu(),
         zhuanke_hot(),
-        kuan_hot()
+        kuan()
         # 添加其他需要运行的异步方法
     ]
     results = await asyncio.gather(*tasks)
-    # results = []
-    # for task in tasks:
-    #     result = await task
-    #     results.append(result)
-    # print(results)
-    # for i in results:
-    #     if i:
-    #         result = i[0]
-    #         print(result)
-    #         await send_text_msg(user_id,test_room,f'{result}')
-    #         if i[1]:
-    #             for index,image in enumerate(i[1]):
-    #                 if 'gif' not in image:
-    #                     filename = image.rsplit('/', 1)[-1]
-    #                     print(image)
-    #                     print(f"图片{index+1}:{filename}")
-    #                     await SendImageMsg(user_id,test_room,image,f'{filename}')
-    #         print("====================================="),
 
+    for items in results: 
+        if not items:
+            continue
+        for item in items: 
+            new_id = item['new_id']
+            ret_content = item['ret_content']
+            ret_images = item.get('ret_images', []) 
+            print("New ID:", new_id)
+            print("Ret Content:", ret_content)
+            print("Ret Images:")
+            await send_text_msg(user_id,test_room,f'{ret_content}')
+            for image in ret_images:
+                url = image['url']
+                filename = image['filename']
+                print("URL:", url)
+                print("Filename:", filename)
+                await SendImageMsg(user_id,test_room,url,filename)
+            print("=====================================")
+            await asyncio.sleep(4)
 
 if __name__ == '__main__':
     asyncio.run(main())

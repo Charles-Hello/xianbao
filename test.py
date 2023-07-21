@@ -16,5 +16,6 @@ from tenacity import retry, stop_after_attempt, stop_after_delay, wait_chain, wa
 # asyncio.run(xiaodigu_hot())
 
 
-dd =[1,2,3,4,5,6,7,8,9,10,]
-print(dd)
+dd =[]
+for i in dd:
+    print("i")

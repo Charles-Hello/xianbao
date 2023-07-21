@@ -10,3 +10,6 @@ def get_local_proxy() -> Optional[str]:
         获取 config.py 中设置的代理
     """
     return SYSTEM_PROXY or None
+  
+  
+  
