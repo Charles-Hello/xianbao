@@ -9,7 +9,7 @@ from push import send_text_msg,SendImageMsg
 from config import user_id,test_room
 
 '''
-cron: */10 * * * *
+cron: */5 * * * *
 new Env('push线报');
 '''
 
@@ -17,8 +17,8 @@ new Env('push线报');
 async def main():
     tasks = [
         xiaodigu(),
+        kuan(),
         zhuanke_hot(),
-        kuan()
         # 添加其他需要运行的异步方法
     ]
     results = await asyncio.gather(*tasks)
