@@ -108,7 +108,7 @@ async def kuan():
                         for i in a_tag:
                             if '薅羊毛小分队' not in i['href']:
                                 link = i['href']
-                                data_entry['ret_content'] = f"\n\n[福]超链接[福]\n{link}"
+                                data_entry['ret_content'] = f"[福]超链接[福]\n{link}\n"
                     else:
                         print("无超链接")
 
