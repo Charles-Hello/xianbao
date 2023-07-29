@@ -21,7 +21,7 @@ async def kuan():
         'url': '#/feed/multiTagFeedList?listType=dateline_desc&hiddenTagRelation=1&tag=%E8%96%85%E7%BE%8A%E6%AF%9B%E5%B0%8F%E5%88%86%E9%98%9F',
         'title': '最新发布',
         'subTitle': '',
-        'page': '8',
+        'page': '1',
     }
     response = await AsyncHttpx.get('https://api.coolapk.com/v6/page/dataList', params=params, cookies=cool_market_headers.cookies, headers=cool_market_headers.headers)
     if response.status_code == 200:
@@ -52,7 +52,11 @@ async def kuan():
 
         for items in postlist:
             # print(items)
-            detail_items = items['message']
+            if 'message' in items:
+                detail_items = items['message']
+                print(detail_items)
+            else:
+                break
             soup = BeautifulSoup(detail_items, 'html.parser')
             non_html_text = soup.get_text()
             non_html_text = non_html_text.replace("查看链接", "").replace('#薅羊毛小分队#', '').replace('\n', '')
@@ -76,6 +80,7 @@ async def kuan():
                 data_entry['new_id'] = new_id
                 print(f"酷安新id: {new_id}, 索引: {index}")
                 data = postlist[index]
+                # print(data)
                 message = data['message']
                 soup = BeautifulSoup(message, 'html.parser')
                 non_html_text = soup.get_text()

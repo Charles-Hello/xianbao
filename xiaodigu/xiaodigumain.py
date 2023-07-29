@@ -55,6 +55,7 @@ async def xiaodigu():
 
     if response.status_code == 200:
         data = response.json()
+        # print(data)
         try:
             with open(XiaodiguPrevious_titles_file, 'r') as file:
                 previous_ids = file.read().splitlines()
