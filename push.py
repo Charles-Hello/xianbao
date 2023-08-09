@@ -23,6 +23,27 @@ async def send_text_msg(robot_wxid, to_wxid, msg):
     return requests.post(url=API_URL, data=result, headers=headers)
 
 
+async def send_text_msg1(msg,group_id):
+
+    payload = ujson.dumps({
+      "action": "send_message",
+      "params": {
+          "detail_type": "group",
+          "group_id": group_id,
+          "message": [
+            {
+                "type": "text",
+                "data": {
+                  "text": msg
+                }
+            }
+          ]
+      }
+    })
+
+    requests.post(API_URL, headers=headers, data=payload)
+
+
 async def SendImageMsg(robot_wxid, to_wxid, path, name):
     data = dict()
     msg = dict()
@@ -36,8 +57,37 @@ async def SendImageMsg(robot_wxid, to_wxid, path, name):
     return requests.post(url=API_URL, data=data, headers=headers, timeout=None)
 
 
-# url = 'http://image.coolapk.com/feed/2023/0720/23/802421_be548e77_5582_6952_395@1440x3200.jpeg'
-# name = '6952_395@1440x3200.jpeg'
-# import asyncio
-# asyncio.run(SendImageMsg(user_id,tnanko,url,name))
-# # # asyncio.run(send_text_msg(user_id,tnanko,name))
+
+async def SendImageMsg1(url, group_id):
+    payload = ujson.dumps({
+      "action": "upload_file",
+      "params": {
+          "type": "url",
+          "name": "logo.jpg",
+          "url": url
+      }
+    })
+    response = requests.post(API_URL, headers=headers, data=payload)
+    data = response.json()
+    fileid= data['data']['file_id']
+
+
+    payload = ujson.dumps({
+      "action": "send_message",
+      "params": {
+          "detail_type": "group",
+          "group_id":group_id,
+          "message": [
+            {
+                "type": "image",
+                "data": {
+                  "file_id": fileid
+                }
+            }
+          ]
+      }
+    })
+
+    response = requests.post(API_URL, headers=headers, data=payload)
+
+    print(response.text)
