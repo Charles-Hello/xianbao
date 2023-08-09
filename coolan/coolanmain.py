@@ -86,6 +86,9 @@ async def kuan():
                 non_html_text = soup.get_text()
                 non_html_text = non_html_text.replace(
                     "查看链接", "").replace('#薅羊毛小分队#', '').replace('\n', '')
+                print("non_html_text文本:", non_html_text)
+                if non_html_text == "":
+                    return
                 result = check_word_in_text(non_html_text)
                 if not result:
                     print("我被过滤啦")
