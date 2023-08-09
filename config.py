@@ -18,13 +18,13 @@ group_id = '24446492186@chatroom'
 user_id = 'wxid_p8geau233z3412'
 taobao_fuli = '17573440617@chatroom'
 taobao_xianbao = '5739151628@chatroom'
-test_room = tnanko
+test_room = "19378256744@chatroom"  #我推送的线报群
 Redis_ip = '192.168.1.155'  ## Redis地址
 Redis_port = '19736'  ## Redis端口，默认为6379
 Redis_pass = ''  ## Redis密码，无则不填
 # 主动调用发送接口
-API_URL = "http://192.168.1.51:8090"
-
+# API_URL = "http://192.168.1.51:8090"
+API_URL = "http://192.168.1.32:8000"
 # 赚客先前的id列表文件路径
 zhuanPrevious_ids_file = 'zhuankeprevious_ids.txt'
 
