@@ -36,6 +36,8 @@ async def getdetail(detail_itemid):
     response = await AsyncHttpx.post('https://app.xiaodigu.cn/mag/circle/v3/show/showView', cookies=cookies, headers=headers, data=data)
     
     data =  response.json()
+    print("报错位置:")
+    print(data)
     data = data['show']
 
     # print(response.text)
