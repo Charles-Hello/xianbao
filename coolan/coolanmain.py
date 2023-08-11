@@ -108,27 +108,18 @@ async def kuan():
                     print("没有图片")
 
                 data_entry['ret_content'] = ""
-                if '查看更多' in message:
-                    message = await get_detail(data['id'])
-                    soup = BeautifulSoup(message, 'html.parser')
-                    a_tag = soup.find_all('a')
-                    if a_tag is not None:
-                        for i in a_tag:
-                            if '薅羊毛小分队' not in i['href']:
-                                link = i['href']
-                                data_entry['ret_content'] = f"[福]超链接[福]\n{link}\n"
-                    else:
-                        print("无超链接")
+                a_tag = soup.find_all('a')
+                if a_tag is not None:
+                    for i in a_tag:
+                        if '薅羊毛小分队' not in i['href']:
+                            link = i['href']
+                            data_entry['ret_content'] = f"[福]超链接[福]\n{link}\n"
+                else:
+                    print("无超链接")
 
-                soup = BeautifulSoup(message, 'html.parser')
-                non_html_text = soup.get_text()
-                non_html_text = non_html_text.replace(
-                    "查看链接", "").replace('#薅羊毛小分队#', '').replace('\n', '')
 
                 rawurl = data['shareUrl']
-
                 data_entry['ret_content'] += f"[庆祝]线报内容[庆祝]\n{non_html_text}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}"
-
                 listdata.append(data_entry)
                 print("====================================="),
             print(listdata)
