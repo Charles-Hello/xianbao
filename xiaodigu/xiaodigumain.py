@@ -17,6 +17,40 @@ from regx_text import check_word_in_text
 import re
 
 
+from datetime import datetime
+
+# 获取今天的日期
+today_date = datetime.now().date()
+formatted_today = today_date.strftime('%Y-%m-%d')
+
+# 文件路径
+file_path = XiaodiguPrevious_titles_file
+
+
+try:
+# 打开文件，获取第一行内容
+    with open(file_path, 'r') as file:
+        first_line = file.readline().strip()
+
+    # 检查第一行内容是否是今天的日期
+    if first_line != formatted_today:
+        # 如果不是今天日期，则清空文件并写入今天日期
+        with open(file_path, 'w') as file:
+            file.write(formatted_today)
+            previous_ids = []
+    else:
+        with open(file_path, 'r') as file:
+          previous_ids = file.read().splitlines()
+
+except FileNotFoundError:
+    # 如果文件不存在，则创建文件并将先前的id列表设置为空列表
+    with open(file_path, 'w') as file:
+        file.write(formatted_today)
+        previous_ids = []
+
+
+
+
 async def xiaodigu():
     cookies = {
         'PHPSESSID': '11111111111111111111111111',
@@ -56,31 +90,22 @@ async def xiaodigu():
     if response.status_code == 200:
         data = response.json()
         # print(data)
-        try:
-            with open(XiaodiguPrevious_titles_file, 'r') as file:
-                previous_ids = file.read().splitlines()
-        except FileNotFoundError:
-            # 如果文件不存在，则创建文件并将先前的id列表设置为空列表
-            with open(XiaodiguPrevious_titles_file, 'w') as file:
-                previous_ids = []
 
         current_ids = []
 
         postlist = data['list']
 
         for items in postlist:
-            detail_items = items['type_value']
+            detail_items = items['title']
             current_ids.append(detail_items)
 
         new_ids = list(set(current_ids) - set(previous_ids))
-
         # print(new_ids)
-        # 将新的id列表保存到txt文件
-        with open(XiaodiguPrevious_titles_file, 'w+') as file:
-            file.write('\n'.join(current_ids))
 
         listdata = []
         if new_ids:
+            with open(file_path, 'a+') as file:
+                file.write('\n'+'\n'.join(current_ids))
             indexes = [current_ids.index(new_id) for new_id in new_ids]
             for new_id, index in zip(new_ids, indexes):
                 data_entry = {}
