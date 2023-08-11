@@ -89,6 +89,9 @@ async def xiaodigu():
                 data = postlist[index]
 
                 detail_items = data['type_value']
+                if data['publish_time_str'] != "刚刚":
+                    print("不是刚刚的")
+                    continue
                 title, ret_images, rawurl = await getdetail(detail_items)
 
                 result = check_word_in_text(title)
