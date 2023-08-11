@@ -33,13 +33,13 @@ async def main():
             print("New ID:", new_id)
             print("Ret Content:", ret_content)
             print("Ret Images:")
-            # await send_text_msg1(f'{ret_content}',test_room)
+            await send_text_msg1(f'{ret_content}',test_room)
             for image in ret_images:
                 url = image['url']
                 filename = image['filename']
                 print("URL:", url)
                 print("Filename:", filename)
-                # await SendImageMsg1(url,test_room)
+                await SendImageMsg1(url,test_room)
             print("=====================================")
             await asyncio.sleep(6)
 
