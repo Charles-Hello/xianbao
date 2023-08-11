@@ -90,14 +90,15 @@ async def xiaodigu():
     if response.status_code == 200:
         data = response.json()
         # print(data)
-
+        if data['code']==10501:
+            return
         current_ids = []
 
         postlist = data['list']
 
         for items in postlist:
-            detail_items = items['type_value']
-            current_ids.append(detail_items)
+            detail_items = items['title']
+            current_ids.append(repr(detail_items))
 
         new_ids = list(set(current_ids) - set(previous_ids))
         # print(new_ids)
