@@ -96,7 +96,7 @@ async def xiaodigu():
         postlist = data['list']
 
         for items in postlist:
-            detail_items = items['title']
+            detail_items = items['type_value']
             current_ids.append(detail_items)
 
         new_ids = list(set(current_ids) - set(previous_ids))
