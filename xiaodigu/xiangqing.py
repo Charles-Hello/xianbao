@@ -4,7 +4,7 @@ import sys
 import os
 import json
 from bs4 import BeautifulSoup
-
+from config import transferurl
 
 # # 获取当前文件的目录路径
 # current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -73,7 +73,7 @@ async def getdetail(detail_itemid):
     print(photoslist)
     
 
-    rawurl = data['sharedata']['linkurl']
+    rawurl = transferurl+data['sharedata']['linkurl']
     print("原始链接："+rawurl)
     
     
