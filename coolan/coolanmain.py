@@ -15,7 +15,7 @@ from coolan.x_app_token import generate_token
 from coolan.get_detail import get_detail
 
 
-
+import fcntl
 from datetime import datetime
 
 # 获取今天的日期
@@ -29,21 +29,25 @@ file_path = kuandiguPrevious_titles_file
 try:
 # 打开文件，获取第一行内容
     with open(file_path, 'r') as file:
+        fcntl.flock(file.fileno(), fcntl.LOCK_EX)  # 加锁
         first_line = file.readline().strip()
 
     # 检查第一行内容是否是今天的日期
     if first_line != formatted_today:
         # 如果不是今天日期，则清空文件并写入今天日期
         with open(file_path, 'w') as file:
+            fcntl.flock(file.fileno(), fcntl.LOCK_EX)  # 加锁
             file.write(formatted_today)
             previous_ids = []
     else:
         with open(file_path, 'r') as file:
+          fcntl.flock(file.fileno(), fcntl.LOCK_EX)  # 加锁
           previous_ids = file.read().splitlines()
 
 except FileNotFoundError:
     # 如果文件不存在，则创建文件并将先前的id列表设置为空列表
     with open(file_path, 'w') as file:
+        fcntl.flock(file.fileno(), fcntl.LOCK_EX)  # 加锁
         file.write(formatted_today)
         previous_ids = []
 
@@ -95,6 +99,7 @@ async def kuan():
         listdata = []
         if new_ids:
             with open(kuandiguPrevious_titles_file, 'a+') as file:
+                fcntl.flock(file.fileno(), fcntl.LOCK_EX)  # 加锁
                 # Convert each integer in current_ids to a string using list comprehension
                 current_ids_str = [str(item) for item in current_ids]
                 # Write the list of strings to the file, each item on a new line
