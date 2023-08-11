@@ -54,7 +54,7 @@ async def getdetail(detail_itemid):
     
     
     
-    title = data['content'][0]
+    title = data['content']
     
     soup = BeautifulSoup(title.replace("\\",""), 'html.parser')
     
