@@ -1,5 +1,5 @@
 
-from redislock import lock
+from redislock import createlock
 import portalocker
 class FileLocker:
     def __init__(self, filename, mode, **file_open_kwargs):
@@ -40,6 +40,7 @@ def file_previous_ids(file_path):
         else:
             #上一个进程还没来得及修改文本内容，这个进程就已经读取了，所以会出现错误
             #这里检查是否有加锁的行为，如果有则等待才能进行
+            lock = createlock(file_path)
             lockresstatus = lock.acquire()
             print("锁状态:")
             print(lockresstatus)
@@ -61,6 +62,7 @@ def write_current_ids(file_path, current_ids):
     with open(file_path, 'a+') as file:
         current_ids_str = [str(item) for item in current_ids]
         file.write('\n'+'\n'.join(current_ids_str))
+        lock = createlock(file_path)
         lock.release()
         print('解开锁钥匙')
 
