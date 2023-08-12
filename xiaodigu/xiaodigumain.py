@@ -103,7 +103,7 @@ async def xiaodigu():
                         print("我被过滤啦")
                         continue
                     logtime = debugfilesave(data)
-                    data_entry['ret_content'] = f"[庆祝]线报标题[庆祝]\n{title}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}\n\n✨Debug✨编号为：\n{logtime}"
+                    data_entry['ret_content'] = f"[庆祝]线报标题[庆祝]\n{title}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}\n\n✨Debug编号✨\n{logtime}"
 
                     data_entry['ret_images'] = []
                     for index, image in enumerate(ret_images):
