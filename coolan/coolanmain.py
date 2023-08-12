@@ -119,11 +119,12 @@ async def kuan():
             return listdata
         else:
             print("没有新的id,无需推送")
+        lock = createlock(file_path)
+        lock.release()
+        print('解开锁钥匙')
 
     else:
         print("请求失败")
-    lock = createlock(file_path)
-    lock.release()
-    print('解开锁钥匙')
+
 
 # asyncio.run(kuan())
