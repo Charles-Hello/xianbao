@@ -62,7 +62,7 @@ def write_current_ids(file_path, current_ids,lock):
     with open(file_path, 'a+') as file:
         current_ids_str = [str(item) for item in current_ids]
         file.write('\n'+'\n'.join(current_ids_str))
-        res = check_lock_existence()
+        res = check_lock_existence(file_path)
         if res:
             lock.release()
             print(f'{file_path}正常解开锁钥匙')
