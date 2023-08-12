@@ -40,7 +40,9 @@ def file_previous_ids(file_path):
         else:
             #上一个进程还没来得及修改文本内容，这个进程就已经读取了，所以会出现错误
             #这里检查是否有加锁的行为，如果有则等待才能进行
-            lock.acquire()
+            lockresstatus = lock.acquire(blocking_timeout=15)
+            print("锁状态:")
+            print(lockresstatus)
             print('拿到锁钥匙')
             with open(file_path, 'r') as file:
                 previous_ids = file.read().splitlines()
