@@ -14,43 +14,14 @@ from config import XiaodiguPrevious_titles_file
 from xiaodigu.xiangqing import getdetail
 from http_utilsja2 import AsyncHttpx
 from regx_text import check_word_in_text
-import re
+from withfilelock import FileLocker,file_previous_ids
 
-import fcntl
-from datetime import datetime
 
-# 获取今天的日期
-today_date = datetime.now().date()
-formatted_today = today_date.strftime('%Y-%m-%d')
 
 # 文件路径
 file_path = XiaodiguPrevious_titles_file
 
-
-try:
-# 打开文件，获取第一行内容
-    with open(file_path, 'r') as file:
-        fcntl.flock(file.fileno(), fcntl.LOCK_EX)  # 加锁
-        first_line = file.readline().strip()
-
-    # 检查第一行内容是否是今天的日期
-    if first_line != formatted_today:
-        # 如果不是今天日期，则清空文件并写入今天日期
-        with open(file_path, 'w') as file:
-            fcntl.flock(file.fileno(), fcntl.LOCK_EX)  # 加锁
-            file.write(formatted_today)
-            previous_ids = []
-    else:
-        with open(file_path, 'r') as file:
-          fcntl.flock(file.fileno(), fcntl.LOCK_EX)  # 加锁
-          previous_ids = file.read().splitlines()
-
-except FileNotFoundError:
-    # 如果文件不存在，则创建文件并将先前的id列表设置为空列表
-    with open(file_path, 'w') as file:
-        fcntl.flock(file.fileno(), fcntl.LOCK_EX)  # 加锁
-        file.write(formatted_today)
-        previous_ids = []
+previous_ids = file_previous_ids(file_path)
 
 
 
@@ -109,8 +80,7 @@ async def xiaodigu():
 
         listdata = []
         if new_ids:
-            with open(file_path, 'a+') as file:
-                fcntl.flock(file.fileno(), fcntl.LOCK_EX)  # 加锁
+            with FileLocker(file_path, 'a+') as file:
                 file.write('\n'+'\n'.join(current_ids))
             indexes = [current_ids.index(new_id) for new_id in new_ids]
             for new_id, index in zip(new_ids, indexes):

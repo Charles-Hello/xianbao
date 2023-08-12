@@ -49,11 +49,7 @@ async def getdetail(detail_itemid):
 
     # with open("详情.json", "w", encoding="utf-8") as f:
     #     f.write(json.dumps(data, ensure_ascii=False))  # ensure_ascii=False 禁止使用转义字符
-        
-    
-    
-    
-    
+
     title = data['content']
     
     soup = BeautifulSoup(title.replace("\\",""), 'html.parser')
