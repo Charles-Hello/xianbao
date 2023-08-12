@@ -11,9 +11,6 @@ from config import kuandiguPrevious_titles_file
 from http_utilsja2 import AsyncHttpx
 from regx_text import check_word_in_text
 
-from coolan.x_app_token import generate_token
-from coolan.get_detail import get_detail
-
 from withfilelock import write_current_ids,file_previous_ids
 
 # 文件路径
