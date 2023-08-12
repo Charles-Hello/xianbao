@@ -4,11 +4,11 @@ pool = redis.ConnectionPool(host=redishost, port=redisport, decode_responses=Tru
 r = redis.Redis(connection_pool=pool)
 # 创建一个锁
 def createlock(lockname):
-    lock = r.lock(lockname+"10") #创建一个锁
+    lock = r.lock(lockname+"12") #创建一个锁
     # r.expire(lockname) #设置锁的过期时间为30秒
     return lock
 def check_lock_existence(lockname):
-    if r.exists(lockname+"10"):
+    if r.exists(lockname+"12"):
         return True
     else:
         return False
