@@ -10,12 +10,12 @@ from coolan.coolanutils import cool_market_headers
 from config import kuandiguPrevious_titles_file
 from http_utilsja2 import AsyncHttpx
 from regx_text import check_word_in_text
-from redislock import createlock
+from redislock import createlock,check_lock_existence
 from withfilelock import write_current_ids,file_previous_ids
 
 # 文件路径
 file_path = kuandiguPrevious_titles_file
-previous_ids = file_previous_ids(file_path)
+previous_ids,lock = file_previous_ids(file_path)
 
 
 async def kuan():
@@ -67,9 +67,9 @@ async def kuan():
             listdata = []
             if new_ids:
                 #这里写入完毕。解锁
-                write_current_ids(file_path, current_ids)
+                write_current_ids(file_path, current_ids,lock)
                 LOCKstatus =True
-                print('酷安正常解开锁钥匙')
+
                 indexes = [current_ids.index(new_id) for new_id in new_ids]
                 for new_id, index in zip(new_ids, indexes):
                     data_entry = {}
@@ -129,8 +129,9 @@ async def kuan():
         print(e)
     finally:
         if not LOCKstatus:
-            lock = createlock(file_path)
-            lock.release()
-            print('酷安最后解开锁钥匙')
+            res = check_lock_existence(file_path)
+            if res:
+                lock.release()
+                print('酷安最后解开锁钥匙')
 
 # asyncio.run(kuan())

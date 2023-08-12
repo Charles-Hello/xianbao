@@ -15,12 +15,12 @@ from xiaodigu.xiangqing import getdetail
 from http_utilsja2 import AsyncHttpx
 from regx_text import check_word_in_text
 from withfilelock import write_current_ids,file_previous_ids
-from redislock import createlock
+from redislock import createlock,check_lock_existence
 
 # 文件路径
 file_path = XiaodiguPrevious_titles_file
 
-previous_ids = file_previous_ids(file_path)
+previous_ids,lock = file_previous_ids(file_path)
 
 
 
@@ -82,9 +82,9 @@ async def xiaodigu():
 
             listdata = []
             if new_ids:
-                write_current_ids(file_path, current_ids)
+                write_current_ids(file_path, current_ids,lock)
                 LOCKstatus =True
-                print('小嘀咕正常解开锁钥匙')
+
                 indexes = [current_ids.index(new_id) for new_id in new_ids]
                 for new_id, index in zip(new_ids, indexes):
                     data_entry = {}
@@ -127,9 +127,10 @@ async def xiaodigu():
         print(e)
     finally:
         if not LOCKstatus:
-            lock = createlock(file_path)
-            lock.release()
-            print('xiaodigu最后解开锁钥匙')
+            res = check_lock_existence(file_path)
+            if res:
+                lock.release()
+                print('xiaodigu最后解开锁钥匙')
 
 
 # asyncio.run(xiaodigu())

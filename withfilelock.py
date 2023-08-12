@@ -1,5 +1,5 @@
 
-from redislock import createlock
+from redislock import createlock,check_lock_existence
 import portalocker
 class FileLocker:
     def __init__(self, filename, mode, **file_open_kwargs):
@@ -48,7 +48,7 @@ def file_previous_ids(file_path):
             with open(file_path, 'r') as file:
                 previous_ids = file.read().splitlines()
                 #这里读取完毕。加锁
-                return previous_ids
+                return previous_ids,lock
             
           
     except FileNotFoundError:
@@ -58,12 +58,13 @@ def file_previous_ids(file_path):
             previous_ids = []
             return previous_ids
           
-def write_current_ids(file_path, current_ids):
+def write_current_ids(file_path, current_ids,lock):
     with open(file_path, 'a+') as file:
         current_ids_str = [str(item) for item in current_ids]
         file.write('\n'+'\n'.join(current_ids_str))
-        lock = createlock(file_path)
-        lock.release()
-        print('解开锁钥匙')
+        res = check_lock_existence()
+        if res:
+            lock.release()
+            print(f'{file_path}正常解开锁钥匙')
 
 
