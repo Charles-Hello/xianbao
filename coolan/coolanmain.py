@@ -10,7 +10,7 @@ from coolan.coolanutils import cool_market_headers
 from config import kuandiguPrevious_titles_file
 from http_utilsja2 import AsyncHttpx
 from regx_text import check_word_in_text
-
+from redislock import createlock
 from withfilelock import write_current_ids,file_previous_ids
 
 # 文件路径
@@ -122,6 +122,8 @@ async def kuan():
 
     else:
         print("请求失败")
-
+    lock = createlock(file_path)
+    lock.release()
+    print('解开锁钥匙')
 
 # asyncio.run(kuan())

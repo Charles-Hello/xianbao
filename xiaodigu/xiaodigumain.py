@@ -15,7 +15,7 @@ from xiaodigu.xiangqing import getdetail
 from http_utilsja2 import AsyncHttpx
 from regx_text import check_word_in_text
 from withfilelock import write_current_ids,file_previous_ids
-
+from redislock import createlock
 
 # 文件路径
 file_path = XiaodiguPrevious_titles_file
@@ -115,6 +115,11 @@ async def xiaodigu():
             return listdata
         else:
             print("没有新的id,无需推送")
+            
+            
+        lock = createlock(file_path)
+        lock.release()
+        print('解开锁钥匙')
 
     else:
         print("无效请求")
