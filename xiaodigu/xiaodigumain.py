@@ -126,7 +126,7 @@ async def xiaodigu():
       print(e)
   finally:
       if not LOCKstatus:
-          lock = createlock(file_path)
+          lock = createlock(file_path+"2")
           lock.release()
           print('解开锁钥匙')
 
