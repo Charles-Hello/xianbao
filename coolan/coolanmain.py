@@ -115,7 +115,7 @@ async def kuan():
 
                     logtime = debugfilesave(data)
                     rawurl = data['shareUrl']
-                    data_entry['ret_content'] += f"[庆祝]线报内容[庆祝]\n{non_html_text}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}\n✨Debug✨编号为：\n{logtime}"
+                    data_entry['ret_content'] += f"[庆祝]线报内容[庆祝]\n{non_html_text}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}\n\n✨Debug✨编号为：\n{logtime}"
                     listdata.append(data_entry)
                     print("====================================="),
                 print(listdata)
