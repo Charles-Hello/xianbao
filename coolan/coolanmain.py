@@ -69,7 +69,7 @@ async def kuan():
                 #这里写入完毕。解锁
                 write_current_ids(file_path, current_ids)
                 LOCKstatus =True
-                
+                print('酷安正常解开锁钥匙')
                 indexes = [current_ids.index(new_id) for new_id in new_ids]
                 for new_id, index in zip(new_ids, indexes):
                     data_entry = {}
@@ -131,6 +131,6 @@ async def kuan():
         if not LOCKstatus:
             lock = createlock(file_path)
             lock.release()
-            print('解开锁钥匙')
+            print('酷安最后解开锁钥匙')
 
 # asyncio.run(kuan())

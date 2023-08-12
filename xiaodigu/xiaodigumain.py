@@ -84,6 +84,7 @@ async def xiaodigu():
           if new_ids:
               write_current_ids(file_path, current_ids)
               LOCKstatus =True
+              print('小嘀咕正常解开锁钥匙')
               indexes = [current_ids.index(new_id) for new_id in new_ids]
               for new_id, index in zip(new_ids, indexes):
                   data_entry = {}
@@ -128,7 +129,7 @@ async def xiaodigu():
       if not LOCKstatus:
           lock = createlock(file_path)
           lock.release()
-          print('解开锁钥匙')
+          print('xiaodigu最后解开锁钥匙')
 
 
 # asyncio.run(xiaodigu())
