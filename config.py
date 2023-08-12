@@ -45,3 +45,8 @@ XiaodiguPrevious_titles_file = 'XiaodiguPrevious_titles_file.txt'
 
 #中转防红
 transferurl= "https://charles-hello.github.io/qq_fanghong/api/?url="
+
+
+#redis原生锁
+redishost='192.168.1.155'
+redisport=19736

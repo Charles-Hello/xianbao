@@ -14,8 +14,7 @@ from config import XiaodiguPrevious_titles_file
 from xiaodigu.xiangqing import getdetail
 from http_utilsja2 import AsyncHttpx
 from regx_text import check_word_in_text
-from withfilelock import FileLocker,file_previous_ids
-
+from withfilelock import write_current_ids,file_previous_ids
 
 
 # 文件路径
@@ -80,8 +79,7 @@ async def xiaodigu():
 
         listdata = []
         if new_ids:
-            with FileLocker(file_path, 'a+') as file:
-                file.write('\n'+'\n'.join(current_ids))
+            write_current_ids(file_path, current_ids)
             indexes = [current_ids.index(new_id) for new_id in new_ids]
             for new_id, index in zip(new_ids, indexes):
                 data_entry = {}

@@ -1,5 +1,6 @@
-import portalocker
 
+from redislock import lock
+import portalocker
 class FileLocker:
     def __init__(self, filename, mode, **file_open_kwargs):
         self.filename = filename
@@ -26,29 +27,39 @@ def file_previous_ids(file_path):
     try:
         
     # 打开文件，获取第一行内容
-        with FileLocker(file_path, 'r') as file:
+        with open(file_path, 'r') as file:
             first_line = file.readline().strip()
 
         # 检查第一行内容是否是今天的日期
         if first_line != formatted_today:
             # 如果不是今天日期，则清空文件并写入今天日期
-            with FileLocker(file_path, 'w') as file:
+            with open(file_path, 'w') as file:
                 file.write(formatted_today)
                 previous_ids = []
                 return previous_ids
         else:
-            with FileLocker(file_path, 'r') as file:
-              previous_ids = file.read().splitlines()
-              return previous_ids
-
+            #上一个进程还没来得及修改文本内容，这个进程就已经读取了，所以会出现错误
+            #这里检查是否有加锁的行为，如果有则等待才能进行
+            lock.acquire()
+            print('拿到锁钥匙')
+            with open(file_path, 'r') as file:
+                previous_ids = file.read().splitlines()
+                #这里读取完毕。加锁
+                return previous_ids
+            
+          
     except FileNotFoundError:
         # 如果文件不存在，则创建文件并将先前的id列表设置为空列表
-        with FileLocker(file_path, 'w') as file:
+        with open(file_path, 'w') as file:
             file.write(formatted_today)
             previous_ids = []
             return previous_ids
           
-
-
+def write_current_ids(file_path, current_ids):
+    with open(file_path, 'a+') as file:
+        current_ids_str = [str(item) for item in current_ids]
+        file.write('\n'+'\n'.join(current_ids_str))
+        lock.release()
+        print('解开锁钥匙')
 
 

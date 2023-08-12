@@ -14,8 +14,7 @@ from regx_text import check_word_in_text
 from coolan.x_app_token import generate_token
 from coolan.get_detail import get_detail
 
-from withfilelock import FileLocker,file_previous_ids
-
+from withfilelock import write_current_ids,file_previous_ids
 
 # 文件路径
 file_path = kuandiguPrevious_titles_file
@@ -69,9 +68,8 @@ async def kuan():
 
         listdata = []
         if new_ids:
-            with FileLocker(file_path, 'a+') as file:
-                current_ids_str = [str(item) for item in current_ids]
-                file.write('\n'+'\n'.join(current_ids_str))
+            write_current_ids(file_path, current_ids)
+            #这里写入完毕。解锁
             indexes = [current_ids.index(new_id) for new_id in new_ids]
             for new_id, index in zip(new_ids, indexes):
                 data_entry = {}
