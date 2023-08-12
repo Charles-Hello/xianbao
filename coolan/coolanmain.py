@@ -12,7 +12,7 @@ from http_utilsja2 import AsyncHttpx
 from regx_text import check_word_in_text
 from redislock import createlock,check_lock_existence
 from withfilelock import write_current_ids,file_previous_ids
-
+from logreview import debugfilesave
 # 文件路径
 file_path = kuandiguPrevious_titles_file
 previous_ids,lock = file_previous_ids(file_path)
@@ -113,9 +113,9 @@ async def kuan():
                     else:
                         print("无超链接")
 
-
+                    logtime = debugfilesave(data)
                     rawurl = data['shareUrl']
-                    data_entry['ret_content'] += f"[庆祝]线报内容[庆祝]\n{non_html_text}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}"
+                    data_entry['ret_content'] += f"[庆祝]线报内容[庆祝]\n{non_html_text}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}\n✨Debug✨编号为：\n{logtime}"
                     listdata.append(data_entry)
                     print("====================================="),
                 print(listdata)

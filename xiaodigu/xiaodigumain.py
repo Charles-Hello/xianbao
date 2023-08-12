@@ -16,7 +16,7 @@ from http_utilsja2 import AsyncHttpx
 from regx_text import check_word_in_text
 from withfilelock import write_current_ids,file_previous_ids
 from redislock import createlock,check_lock_existence
-
+from logreview import debugfilesave
 # 文件路径
 file_path = XiaodiguPrevious_titles_file
 
@@ -102,8 +102,8 @@ async def xiaodigu():
                     if not result:
                         print("我被过滤啦")
                         continue
-
-                    data_entry['ret_content'] = f"[庆祝]线报标题[庆祝]\n{title}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}"
+                    logtime = debugfilesave(data)
+                    data_entry['ret_content'] = f"[庆祝]线报标题[庆祝]\n{title}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}\n✨Debug✨编号为：\n{logtime}"
 
                     data_entry['ret_images'] = []
                     for index, image in enumerate(ret_images):
@@ -117,6 +117,7 @@ async def xiaodigu():
                     listdata.append(data_entry)
                     print("====================================="),
                 print(listdata)
+                
                 return listdata
             else:
                 print("没有新的id,无需推送")
