@@ -18,7 +18,8 @@ from coolan.coolanemoji import emoji_relace
 # 文件路径
 file_path = kuandiguPrevious_titles_file
 previous_ids,lock = file_previous_ids(file_path)
-
+if not lock:
+    exit()
 
 async def kuan():
     try:
@@ -115,11 +116,13 @@ async def kuan():
                     if detailsoup:
                         soup = detailsoup
                     a_tag = soup.find_all('a')
-                    if a_tag is not None:
-                        for i in a_tag:
+                    if a_tag :
+                        for i,g in enumerate(a_tag):
                             if '薅羊毛小分队' not in i['href']:
+                                if g ==0:
+                                    data_entry['ret_content'] += f"[福]超链接[福]\n"
                                 link = i['href']
-                                data_entry['ret_content'] = f"[福]超链接[福]\n{link}\n"
+                                data_entry['ret_content'] += f"{link}\n\n"
                     else:
                         print("无超链接")
 

@@ -25,44 +25,48 @@ async def get_htmlids():
 # 文件路径
 file_path = xianbaowuPrevious_titles_file
 previous_ids,lock = file_previous_ids(file_path)
-  
+if not lock:
+    exit()
 async def hxm5():
   try:
       LOCKstatus =False
       htmlnames = await get_htmlids()
       soup = BeautifulSoup(htmlnames, 'html.parser')
       current_ids = []
-      current_htmlids = []
       # 提取html的id
       titles = soup.find_all('a')
+      dict_data = {}
+      
       for i in titles:
           if "title_name" not in str(i):
               continue
           
           htmlid = i['href'].replace('/t/', '')
           # print("id："+htmlid)
+          
           title = i['title']
+          dict_data[title] = htmlid
           # print("标题："+title)
           current_ids.append(str(title))
-          current_htmlids.append(str(htmlid))
-          new_ids = list(set(current_ids) - set(previous_ids))
-          
+
+      new_ids = list(set(current_ids) - set(previous_ids))
+      
           
       listdata = []
       if new_ids:
           #这里写入完毕。解锁
           write_current_ids(file_path, current_ids,lock)
           LOCKstatus =True
-
-          indexes = [current_ids.index(new_id) for new_id in new_ids]
-          for new_id, index in zip(new_ids, indexes):
+          
+          
+          for new_id in new_ids:
               data_entry = {}
               data_entry['new_id'] = new_id
+              index = dict_data[new_id]
               print(f"线报物新id: {new_id}, 索引: {index}")
               
-              
-              title =new_ids[index]
-              titleid = current_htmlids[index]
+              title =new_id
+              titleid = index
               print("title文本:", title)
               if title == "":
                   return
@@ -81,7 +85,7 @@ async def hxm5():
               content = ''
               for i in text:
                   _content = i.get_text().replace("\n",'')
-                  _content = content.replace(" ","")
+                  _content = _content.replace(" ","")
                   content+=_content
               
               
@@ -103,6 +107,8 @@ async def hxm5():
 
               data_entry['ret_content'] = ""
               a_tag = soup.p.find_all('a')
+              print(a_tag)
+              # print(type(a_tag))
               if  a_tag :
                   data_entry['ret_content'] += f"[福]超链接[福]\n"
                   for i in a_tag:
@@ -114,7 +120,7 @@ async def hxm5():
               logtime = debugfilesave(detail_html)
               
               rawurl = f"https://www.hxm5.com/t/{titleid}"
-              data_entry['ret_content'] += f"[庆祝]线报内容[庆祝]\n{content}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}\n\n✨Debug编号✨\n{logtime}"
+              data_entry['ret_content'] += f"[庆祝]线报内容[庆祝]\n{title}\n{content}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}\n\n✨Debug编号✨\n{logtime}"
               listdata.append(data_entry)
               print("====================================="),
           if listdata:
@@ -126,7 +132,9 @@ async def hxm5():
           print("没有新的id,无需推送")
           
   except Exception as e:
-      print("报错内容："+e)
+      print("报错内容：")
+      print(e)
+
       print(traceback.format_exc())
   finally:
       if not LOCKstatus:
@@ -135,5 +143,5 @@ async def hxm5():
               lock.release()
               print('线报屋最后解开锁钥匙')
         
-html = asyncio.run(hxm5())
+# html = asyncio.run(hxm5())
 

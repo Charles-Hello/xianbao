@@ -21,7 +21,8 @@ from logreview import debugfilesave
 file_path = XiaodiguPrevious_titles_file
 
 previous_ids,lock = file_previous_ids(file_path)
-
+if not lock:
+    exit()
 
 
 

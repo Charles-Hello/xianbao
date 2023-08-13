@@ -36,7 +36,7 @@ def file_previous_ids(file_path):
             with open(file_path, 'w') as file:
                 file.write(formatted_today)
                 previous_ids = []
-                return previous_ids
+                return previous_ids,None
         else:
             #上一个进程还没来得及修改文本内容，这个进程就已经读取了，所以会出现错误
             #这里检查是否有加锁的行为，如果有则等待才能进行
