@@ -115,12 +115,11 @@ async def kuan():
                     if detailsoup:
                         soup = detailsoup
                     a_tag = soup.find_all('a')
-                    if a_tag :
-                        data_entry['ret_content'] += f"[福]超链接[福]\n"
+                    if a_tag is not None:
                         for i in a_tag:
                             if '薅羊毛小分队' not in i['href']:
                                 link = i['href']
-                                data_entry['ret_content'] += f"{link}\n"
+                                data_entry['ret_content'] = f"[福]超链接[福]\n{link}\n"
                     else:
                         print("无超链接")
 
