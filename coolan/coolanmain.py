@@ -14,6 +14,7 @@ from redislock import createlock,check_lock_existence
 from withfilelock import write_current_ids,file_previous_ids
 from logreview import debugfilesave
 from coolan.get_detail import get_detail
+from coolan.coolanemoji import emoji_relace
 # 文件路径
 file_path = kuandiguPrevious_titles_file
 previous_ids,lock = file_previous_ids(file_path)
@@ -114,20 +115,25 @@ async def kuan():
                     if detailsoup:
                         soup = detailsoup
                     a_tag = soup.find_all('a')
-                    if a_tag is not None:
+                    if a_tag :
+                        data_entry['ret_content'] += f"[福]超链接[福]\n"
                         for i in a_tag:
                             if '薅羊毛小分队' not in i['href']:
                                 link = i['href']
-                                data_entry['ret_content'] = f"[福]超链接[福]\n{link}\n"
+                                data_entry['ret_content'] += f"{link}\n"
                     else:
                         print("无超链接")
 
                     logtime = debugfilesave(data)
                     rawurl = data['shareUrl']
+                    non_html_text = emoji_relace(non_html_text)
                     data_entry['ret_content'] += f"[庆祝]线报内容[庆祝]\n{non_html_text}\n\n[爆竹]线报原始链接[爆竹]\n{rawurl}\n\n✨Debug编号✨\n{logtime}"
                     listdata.append(data_entry)
                     print("====================================="),
-                print(listdata)
+                if listdata:
+                    print(listdata)
+                else:
+                    print("内容都被过滤掉了")
                 return listdata
             else:
                 print("没有新的id,无需推送")

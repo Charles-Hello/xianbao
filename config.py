@@ -43,6 +43,11 @@ kuandiguPrevious_titles_file = 'kuandiguPrevious_titles_file.txt'
 XiaodiguPrevious_titles_file = 'XiaodiguPrevious_titles_file.txt'
 
 
+#线报屋
+xianbaowuPrevious_titles_file = 'xianbaowuPrevious_titles_file.txt'
+
+
+
 #中转防红
 transferurl= "https://charles-hello.github.io/qq_fanghong/api/?url="
 

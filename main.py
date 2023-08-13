@@ -7,7 +7,7 @@ from xiaodigu.xiaodigumain import xiaodigu
 import asyncio
 from push import send_text_msg,SendImageMsg,send_text_msg1,SendImageMsg1
 from config import user_id,test_room
-
+from xianbaowu import hxm5
 '''
 cron: */10 * * * * *
 new Env('push线报');
@@ -18,6 +18,7 @@ async def main():
     tasks = [
         xiaodigu(),
         kuan(),
+        hxm5(),
         # zhuanke_hot(),todo:暂时不用
         # 添加其他需要运行的异步方法
     ]

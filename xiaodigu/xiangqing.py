@@ -67,7 +67,6 @@ async def getdetail(detail_itemid):
         photoslist.append(before_url)
     print('图片列表：')
     print(photoslist)
-    
 
     rawurl = transferurl+data['sharedata']['linkurl']
     print("原始链接："+rawurl)

@@ -42,9 +42,13 @@ def file_previous_ids(file_path):
             #这里检查是否有加锁的行为，如果有则等待才能进行
             lock = createlock(file_path)
             lockresstatus = lock.acquire()
-            print("锁状态:")
-            print(lockresstatus)
-            print('拿到锁钥匙')
+            
+            #todo:
+            # print(f"{file_path}锁状态:")
+            # print(lockresstatus)
+            
+            
+            print(f'{file_path}拿到锁钥匙')
             with open(file_path, 'r') as file:
                 previous_ids = file.read().splitlines()
                 #这里读取完毕。加锁
@@ -56,15 +60,16 @@ def file_previous_ids(file_path):
         with open(file_path, 'w') as file:
             file.write(formatted_today)
             previous_ids = []
-            return previous_ids
+            return previous_ids,None
           
 def write_current_ids(file_path, current_ids,lock):
     with open(file_path, 'a+') as file:
         current_ids_str = [str(item) for item in current_ids]
         file.write('\n'+'\n'.join(current_ids_str))
-        res = check_lock_existence(file_path)
-        if res:
-            lock.release()
-            print(f'{file_path}正常解开锁钥匙')
+        if lock:
+            res = check_lock_existence(file_path)
+            if res:
+                lock.release()
+                print(f'{file_path}正常解开锁钥匙')
 
 

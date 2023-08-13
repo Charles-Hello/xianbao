@@ -116,7 +116,10 @@ async def xiaodigu():
 
                     listdata.append(data_entry)
                     print("====================================="),
-                print(listdata)
+                if listdata:
+                    print(listdata)
+                else:
+                    print("内容都被过滤掉了")
                 
                 return listdata
             else:
@@ -131,7 +134,7 @@ async def xiaodigu():
             res = check_lock_existence(file_path)
             if res:
                 lock.release()
-                print('xiaodigu最后解开锁钥匙')
+                print('小嘀咕最后解开锁钥匙')
 
 
 # asyncio.run(xiaodigu())
