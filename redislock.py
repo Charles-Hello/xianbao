@@ -3,12 +3,13 @@ from config import redishost,redisport
 pool = redis.ConnectionPool(host=redishost, port=redisport, decode_responses=True)
 r = redis.Redis(connection_pool=pool)
 # 创建一个锁
+num = "15"
 def createlock(lockname):
-    lock = r.lock(lockname+"13") #创建一个锁
-    # r.expire(lockname) #设置锁的过期时间为30秒
+    lock = r.lock(lockname+num) #创建一个锁
+    r.expire(lockname+num) #设置锁的过期时间为30秒
     return lock
 def check_lock_existence(lockname):
-    if r.exists(lockname+"13"):
+    if r.exists(lockname+num):
         return True
     else:
         return False

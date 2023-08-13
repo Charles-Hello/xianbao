@@ -8,7 +8,7 @@ from coolan.coolanutils import cool_market_headers
 # parent_dir = os.path.abspath(os.path.join(current_dir, ".."))
 # # 将 http_utils 所在的目录路径添加到 sys.path 中
 # sys.path.append(parent_dir)
-
+from bs4 import BeautifulSoup
 from http_utilsja2 import AsyncHttpx
 
 
@@ -32,8 +32,8 @@ async def get_detail(id):
     #     f.write(json.dumps(data, ensure_ascii=False))  # ensure_ascii=False 禁止使用转义字符
     data = response.json()
     message = data['data']['message']
-    # print(message)
-    return message
+    soup = BeautifulSoup(message, 'html.parser')
+    return soup
 
 
 # asyncio.run(get_detail("47800794"))

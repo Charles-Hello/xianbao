@@ -13,6 +13,7 @@ from regx_text import check_word_in_text
 from redislock import createlock,check_lock_existence
 from withfilelock import write_current_ids,file_previous_ids
 from logreview import debugfilesave
+from coolan.get_detail import get_detail
 # 文件路径
 file_path = kuandiguPrevious_titles_file
 previous_ids,lock = file_previous_ids(file_path)
@@ -89,7 +90,13 @@ async def kuan():
                     if not result:
                         print("我被过滤啦")
                         continue
-
+                    
+                    #如果这里没有过滤但是有“查看更多”则需要再次请求详情页获取数据
+                    detailsoup =""
+                    if "查看更多" in non_html_text:
+                        detailsoup = await get_detail(data['id'])
+                    
+                    
                     picArr = data['picArr']
                     if len(picArr) > 0:
                         data_entry['ret_images'] = []
@@ -104,6 +111,8 @@ async def kuan():
                         print("没有图片")
 
                     data_entry['ret_content'] = ""
+                    if detailsoup:
+                        soup = detailsoup
                     a_tag = soup.find_all('a')
                     if a_tag is not None:
                         for i in a_tag:
