@@ -113,7 +113,7 @@ async def hxm5():
                   data_entry['ret_content'] += f"[福]超链接[福]\n"
                   for i in a_tag:
                     link = i['href']
-                    data_entry['ret_content'] += f"https://www.hxm5.com/{link}\n"
+                    data_entry['ret_content'] += f"https://www.hxm5.com/{link}\n\n"
               else:
                   print("无超链接")
 
