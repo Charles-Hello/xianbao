@@ -13,6 +13,12 @@ word_list = ["启动", "调查", '后来', '嘎嘎', '认真', '求', '话说', 
 
 regx_text= ['谁.*有']
 
+
+#问卷调查域名
+survey_domain = ['wjx',"wj.qq",'jiandaoyun','docs.google','formstack','typeform','zoho','mikecrm','jinshuju','fanqier','shenqingtong','wenjuan','51diaocha','weidiaocha']
+
+
+
 def check_word_in_text(text):
     # Create a copy of the word_list
     filtered_word_list = list(word_list)
@@ -21,7 +27,7 @@ def check_word_in_text(text):
         filtered_word_list.remove('?')
         
     escaped_words = [re.escape(word) for word in filtered_word_list]
-    escaped_words+=regx_text
+    escaped_words+=regx_text+survey_domain
     pattern = '|'.join(escaped_words)
     regex = re.compile(pattern)
     match = regex.search(text)
