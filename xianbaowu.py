@@ -87,7 +87,12 @@ async def hxm5():
                   _content = i.get_text().replace("\n",'')
                   _content = _content.replace(" ","")
                   content+=_content
-              
+                  
+                  
+              result = check_word_in_text(content)
+              if not result:
+                  print("我被过滤啦")
+                  continue
               
               #提取图片
               imglist = soup.p.find_all('img')
