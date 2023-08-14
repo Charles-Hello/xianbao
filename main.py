@@ -16,7 +16,7 @@ new Env('push线报');
 
 async def main():
     tasks = [
-        xiaodigu(),
+        # xiaodigu(),
         kuan(),
         hxm5(),
         # zhuanke_hot(),todo:暂时不用
