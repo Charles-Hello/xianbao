@@ -15,7 +15,7 @@ regx_text= ['谁.*有']
 
 
 #问卷调查域名
-survey_domain = ['wjx',"wj.qq",'jiandaoyun','docs.google','formstack','typeform','zoho','mikecrm','jinshuju','fanqier','shenqingtong','wenjuan','51diaocha','weidiaocha']
+survey_domain = ['wjx',"wj.qq",'jiandaoyun','docs.google','formstack','typeform','zoho','mikecrm','jinshuju','fanqier','shenqingtong','wenjuan','51diaocha','weidiaocha','ebdan']
 
 
 
