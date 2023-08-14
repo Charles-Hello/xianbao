@@ -112,6 +112,9 @@ async def hxm5():
               if  a_tag :
                   data_entry['ret_content'] += f"[福]超链接[福]\n"
                   for i in a_tag:
+                    if {"美团", "外卖"} & set(title):
+                        data_entry['ret_content'] += f"#小程序://美团丨外卖美食买菜酒店电影购物/bgrCmX6IfqoKkLy\n\n"
+                        break
                     link = i['href']
                     data_entry['ret_content'] += f"https://www.hxm5.com/{link}\n\n"
               else:

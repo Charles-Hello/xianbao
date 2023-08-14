@@ -39,7 +39,7 @@ def debugfilesave(data):
   
 def delete_old_files():
     current_time = datetime.datetime.now()
-    seven_days_ago = current_time - datetime.timedelta(days=7)
+    seven_days_ago = current_time - datetime.timedelta(days=3)
 
     for file_name in os.listdir('.'):
         if file_name.endswith('.json'):
