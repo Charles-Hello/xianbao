@@ -17,8 +17,8 @@ new Env('push线报');
 async def main():
     tasks = [
         xiaodigu(),
-        kuan(),
-        # hxm5(),
+        # kuan(),
+        hxm5(),
         # zhuanke_hot(),todo:暂时不用
         # 添加其他需要运行的异步方法
     ]
