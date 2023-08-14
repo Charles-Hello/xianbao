@@ -11,7 +11,7 @@ from redislock import createlock,check_lock_existence
 from withfilelock import write_current_ids,file_previous_ids
 from logreview import debugfilesave
 import traceback
-
+from datetime import datetime,timedelta
 
 async def getdetail(id):
     response = await AsyncHttpx.get(f'https://www.hxm5.com/t/{id}')
@@ -34,17 +34,27 @@ async def hxm5():
       soup = BeautifulSoup(htmlnames, 'html.parser')
       current_ids = []
       # 提取html的id
-      titles = soup.find_all('a')
       dict_data = {}
-      
-      for i in titles:
-          if "title_name" not in str(i):
+
+      rk_li_r = soup.find_all('div', class_='rk_li_r')
+          
+      for rk_li in rk_li_r:
+          rktime_span = rk_li.find('span', id='rktime')
+          timestamp = int(rktime_span['data'])
+          formatted_time = datetime.utcfromtimestamp(timestamp)
+          
+          current_time = datetime.utcnow()
+
+          time_difference = current_time - formatted_time
+
+          if time_difference >= timedelta(minutes=1):
               continue
           
-          htmlid = i['href'].replace('/t/', '')
-          # print("id："+htmlid)
           
-          title = i['title']
+          
+          title = rk_li.find('a', class_='title_name')['title']
+          htmlid = rk_li.find('a', class_='title_name')['href'].replace('/t/', '')
+
           dict_data[title] = htmlid
           # print("标题："+title)
           current_ids.append(str(title))
@@ -151,5 +161,5 @@ async def hxm5():
               lock.release()
               print('线报屋最后解开锁钥匙')
         
-# html = asyncio.run(hxm5())
+html = asyncio.run(hxm5())
 
