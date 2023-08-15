@@ -20,14 +20,14 @@ from logreview import debugfilesave
 # 文件路径
 file_path = XiaodiguPrevious_titles_file
 
-previous_ids,lock = file_previous_ids(file_path)
-if not lock:
-    exit()
+
 
 
 
 async def xiaodigu():
-  
+    previous_ids,lock = file_previous_ids(file_path)
+    if not lock:
+      exit()
     try:
         LOCKstatus =False
         cookies = {

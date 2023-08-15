@@ -15,13 +15,14 @@ from withfilelock import write_current_ids,file_previous_ids
 from logreview import debugfilesave
 from coolan.get_detail import get_detail
 from coolan.coolanemoji import emoji_relace
-# 文件路径
-file_path = kuandiguPrevious_titles_file
-previous_ids,lock = file_previous_ids(file_path)
-if not lock:
-    exit()
+
 
 async def kuan():
+      # 文件路径
+    file_path = kuandiguPrevious_titles_file
+    previous_ids,lock = file_previous_ids(file_path)
+    if not lock:
+        exit()
     try:
         LOCKstatus = False
         params = {

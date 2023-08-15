@@ -21,13 +21,14 @@ async def get_htmlids():
     response = await AsyncHttpx.get('https://www.hxm5.com/xianbao/2/')
     return response.text
   
-  
-# 文件路径
-file_path = xianbaowuPrevious_titles_file
-previous_ids,lock = file_previous_ids(file_path)
-if not lock:
-    exit()
+
 async def hxm5():
+    
+  # 文件路径
+  file_path = xianbaowuPrevious_titles_file
+  previous_ids,lock = file_previous_ids(file_path)
+  if not lock:
+      exit()
   try:
       LOCKstatus =False
       htmlnames = await get_htmlids()
