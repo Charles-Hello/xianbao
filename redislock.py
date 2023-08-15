@@ -3,7 +3,7 @@ from config import redishost,redisport
 pool = redis.ConnectionPool(host=redishost, port=redisport, decode_responses=True)
 r = redis.Redis(connection_pool=pool)
 # 创建一个锁
-num = "25"
+num = "45"
 def createlock(lockname):
     lock = r.lock(lockname+num) #创建一个锁
     r.expire(lockname+num,30) #设置锁的过期时间为30秒
