@@ -42,7 +42,7 @@ def delete_old_files():
     seven_days_ago = current_time - datetime.timedelta(days=3)
 
     for file_name in os.listdir('.'):
-        if file_name.endswith('.json'):
+        if file_name.endswith('.json') or file_name.endswith('.html'):
             if not {"20", "-"} & set(file_name):
                 continue
             file_time = datetime.datetime.strptime(file_name[:-5], "%Y-%m-%d-%H-%M-%S")
