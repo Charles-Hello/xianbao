@@ -46,7 +46,7 @@ def delete_old_files():
             if not {"20", "-"} & set(file_name):
                 continue
             file_time = datetime.datetime.strptime(file_name[:-5], "%Y-%m-%d-%H-%M-%S")
-            if file_time < seven_days_ago:
+            if file_time > seven_days_ago:
                 os.remove(file_name)
                 print(f"Deleted old file: '{file_name}'")
 
