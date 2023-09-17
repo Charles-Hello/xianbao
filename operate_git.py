@@ -14,6 +14,6 @@ repo.git.add('--all')
 repo.git.commit(m='update word_list')
 
 # 推送到GitHub
-origin = repo.remote(name='https://github.com/Charles-Hello/xianbao.git')
+origin = repo.remote(name='origin')
 origin.push(origin, 'master:mybranch')
 
