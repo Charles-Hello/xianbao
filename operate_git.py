@@ -15,5 +15,5 @@ repo.git.commit(m='update word_list')
 
 # 推送到GitHub
 origin = repo.remote(name='origin')
-origin.push(origin, 'master:mybranch')
+origin.push('master:mybranch')
 
