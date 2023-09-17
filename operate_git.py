@@ -8,27 +8,18 @@ def git_push():
 
         # 添加所有更改到暂存区
         repo.git.add('--all')
-        
+
         # 提交更改
         repo.git.commit(m='update word_list')
+
         # 切换到master分支
         repo.git.checkout('master')
 
-        # 拉取远程分支（master:mybranch）
-        origin = repo.remote(name='origin')
-        origin.pull('master:mybranch')
-
-        # 添加所有更改到暂存区
-        repo.git.add('--all')
-
-        # 提交更改
-        repo.git.commit(m='update word_list')
-
         # 推送到GitHub
+        origin = repo.remote(name='origin')
         origin.push('master:mybranch')
-        return True, True
+        return True,True
     except Exception as e:
-        print(e)
-        return False, e
+        return False,e
 
 git_push()
