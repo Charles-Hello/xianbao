@@ -22,4 +22,4 @@ def git_push():
     except Exception as e:
         return False,e
 
-git_push()
+# git_push()
