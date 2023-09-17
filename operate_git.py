@@ -14,7 +14,7 @@ repo.git.add('--all')
 repo.git.commit(m='update word_list')
 
 
-# 创建并切换到master分支
+# 切换到master分支
 repo.git.checkout('master')
 
 # 推送到GitHub
