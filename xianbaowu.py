@@ -22,6 +22,19 @@ async def get_htmlids():
     return response.text
   
 
+async def capture_redirect_url(url):
+    response = await AsyncHttpx.get(url)
+    if response.status_code == 200:  
+        redirected_url = response.request.url
+        return redirected_url  # 返回捕获到的重定向链接
+    else:
+        print(response.headers)
+        return None  # 如果没有重定向，则返回None
+      
+
+
+
+
 async def hxm5():
     
   # 文件路径
@@ -132,8 +145,12 @@ async def hxm5():
                         data_entry['ret_content'] += f"#小程序://美团丨外卖美食买菜酒店电影购物/bgrCmX6IfqoKkLy\n\n"
                         break
                     link = i['href']
-                    data_entry['ret_content'] += f"https://www.hxm5.com/{link}\n\n"
-              else:
+                    _redirect_raw_url = f"https://www.hxm5.com/{link}"
+                    redirect_raw_url = await capture_redirect_url(_redirect_raw_url)   
+                    if 'u.jd.com' in redirect_raw_url:
+                        return #广告#
+                    data_entry['ret_content'] += f"{_redirect_raw_url}\n\n"
+              else: 
                   print("无超链接")
 
               logtime = debugfilesave(detail_html)
