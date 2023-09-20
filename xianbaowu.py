@@ -99,10 +99,13 @@ async def hxm5():
                   print("我被过滤啦")
                   continue
               
+              
+              titleid = '2307957'
+              
               detail_html = await getdetail(titleid)
 
 
-
+              
               #获取正文
               soup = BeautifulSoup(detail_html, 'html.parser')
               text = soup.find_all('p')
@@ -145,9 +148,9 @@ async def hxm5():
                         data_entry['ret_content'] += f"#小程序://美团丨外卖美食买菜酒店电影购物/bgrCmX6IfqoKkLy\n\n"
                         break
                     link = i['href']
-                    _redirect_raw_url = f"https://www.hxm5.com/{link}"
+                    _redirect_raw_url = f"https://www.hxm5.com{link}"
                     redirect_raw_url = await capture_redirect_url(_redirect_raw_url)   
-                    if 'u.jd.com' in redirect_raw_url:
+                    if 'u.jd.com' in redirect_raw_url or 'coupon' in redirect_raw_url:
                         return #广告#
                     data_entry['ret_content'] += f"{_redirect_raw_url}\n\n"
               else: 
