@@ -3,7 +3,7 @@ import json
 import datetime
 import os
 from bs4 import BeautifulSoup
-
+import re
 def is_html(text):
     try:
         soup = BeautifulSoup(text, 'html.parser')
@@ -46,7 +46,14 @@ def delete_old_files():
             if not {"20", "-"} & set(file_name):
                 continue
             file_time = datetime.datetime.strptime(file_name[:-5], "%Y-%m-%d-%H-%M-%S")
-            if file_time > seven_days_ago:
+            
+            _differencetime = file_time - seven_days_ago
+            pattern = r"(\d+)\s+days"
+            matches = re.search(pattern, str(_differencetime))
+            days_before = 1
+            if matches:
+                days_before = int(matches.group(1))
+            if days_before > 4:
                 os.remove(file_name)
                 print(f"Deleted old file: '{file_name}'")
 
